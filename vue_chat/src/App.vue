@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <Container>
-            <ChatWindow>
+            <ChatWindow @send-message='sendMessages'>
               <ChatMessenger v-bind:username='message.author'
               v-bind:datetime='message.datetime'
               v-for='(message, i) in messages' 
@@ -30,16 +30,23 @@ export default {
         },
         methods: {
             getMessages() {
-                  this.axios.get('http://37.77.104.246/api/chat/getmessages.php')
-                  .then( (resp)=>{
-                      this.messages = resp.data
-                  } )
+                this.axios.get('http://37.77.104.246/api/chat/getmessages.php').then( (resp)=>{
+                    this.messages = resp.data
+                } )
+            },
+            sendMessages(username, txt) {
+                this.axios.post('http://37.77.104.246/api/chat/sendmessage.php', {
+                    author: username,
+                    text: txt
+                }).then( () => {
+                    this.getMessages()
+                } )
             }
         },
         mounted() {
             this.getMessages();
         }
-    }
+}
 </script>
 
 <style>

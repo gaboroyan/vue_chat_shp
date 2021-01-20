@@ -6,9 +6,9 @@
             </div>
         </div>
         <div class='chat-send-panel'>
-            <input type='text' placeholder='Ваш никнейм...' class='chat-send-name-field'/>
-            <input type='text' placeholder='Сообщение...' class='chat-send-message-field'/>
-            <button>
+            <input type='text' placeholder='Ваш никнейм...' class='chat-send-name-field' v-model='name'/>
+            <input type='text' placeholder='Сообщение...' class='chat-send-message-field' v-model='message'/>
+            <button @click='sendMessage'>
                 <img src='/img/send.png' />
             </button>
         </div>
@@ -17,7 +17,13 @@
 
 <script>
     export default {
-        name: 'ChatWindow'
+        name: 'ChatWindow',
+        props: ['name', 'message'],
+        methods: {
+            sendMessage: function() {
+                this.$emit('send-message', {username: this.name, txt: this.message})
+            }
+        }
     }
 </script>
 
